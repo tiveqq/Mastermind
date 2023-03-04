@@ -116,7 +116,7 @@ public class Field {
     }
 
     public List<Color> getSecretCode() {
-        return (fieldState == FieldState.LOST) || (fieldState == FieldState.WON) ? secretCode : null;
+        return secretCode;
     }
 
     public int getRowCount() {

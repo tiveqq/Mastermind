@@ -4,20 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="259fe4fa-e1ad-41e7-957a-c8338430f7ec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/sk/tuke/kpi/kp/mastermind/Mastermind.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sk/tuke/kpi/kp/mastermind/consoleui/ConsoleUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sk/tuke/kpi/kp/mastermind/core/Color.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sk/tuke/kpi/kp/mastermind/core/Field.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sk/tuke/kpi/kp/mastermind/core/FieldState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sk/tuke/kpi/kp/mastermind/core/KeyColor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/sk/tuke/kpi/kp/mastermind/consoleui/ConsoleUITest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/sk/tuke/kpi/kp/mastermind/core/FieldTest.java" afterDir="false" />
+    <list default="true" id="259fe4fa-e1ad-41e7-957a-c8338430f7ec" name="Changes" comment="logic, tests, ui">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gamestudio-6581/sk/tuke/kpi/kp/mastermind/core/Field.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gamestudio-6581/sk/tuke/kpi/kp/mastermind/core/Field.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/gamestudio-6581/sk/tuke/kpi/kp/mastermind/core/FieldTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/gamestudio-6581/sk/tuke/kpi/kp/mastermind/core/FieldTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sk/tuke/kpi/kp/mastermind/core/Field.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sk/tuke/kpi/kp/mastermind/core/Field.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/sk/tuke/kpi/kp/mastermind/consoleui/ConsoleUITest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/sk/tuke/kpi/kp/mastermind/core/FieldTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/sk/tuke/kpi/kp/mastermind/core/FieldTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" show_ignored="true">
+    <option name="groupingKeys">
+      <option value="directory" />
+      <option value="module" />
+    </option>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -61,7 +65,7 @@
       <recent name="sk.tuke.kpi.kp.mastermind.core" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.FieldTest.checkMakeGuess">
+  <component name="RunManager" selected="Application.Mastermind">
     <configuration name="Mastermind" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="sk.tuke.kpi.kp.mastermind.Mastermind" />
       <module name="gamestudio-6581" />
@@ -106,6 +110,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="FieldTest.checkIsGameWon" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gamestudio-6581" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="sk.tuke.kpi.kp.mastermind.core.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="sk.tuke.kpi.kp.mastermind.core" />
+      <option name="MAIN_CLASS_NAME" value="sk.tuke.kpi.kp.mastermind.core.FieldTest" />
+      <option name="METHOD_NAME" value="checkIsGameWon" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="FieldTest.checkMakeGuess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gamestudio-6581" />
       <extension name="coverage">
@@ -124,10 +144,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.FieldTest.checkMakeGuess" />
-        <item itemvalue="JUnit.FieldTest.checkIsGameLost" />
-        <item itemvalue="JUnit.FieldTest" />
         <item itemvalue="Application.Mastermind" />
+        <item itemvalue="JUnit.FieldTest.checkIsGameWon" />
+        <item itemvalue="JUnit.FieldTest" />
+        <item itemvalue="JUnit.FieldTest.checkIsGameLost" />
+        <item itemvalue="JUnit.FieldTest.checkMakeGuess" />
       </list>
     </recent_temporary>
   </component>
@@ -143,12 +164,25 @@
       <workItem from="1677281713371" duration="25000" />
       <workItem from="1677281747375" duration="23873000" />
       <workItem from="1677670741733" duration="5338000" />
-      <workItem from="1677680080853" duration="4434000" />
+      <workItem from="1677680080853" duration="8093000" />
+      <workItem from="1677889528849" duration="1730000" />
     </task>
+    <task id="LOCAL-00001" summary="logic, tests, ui">
+      <created>1677684937341</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1677684937341</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="logic, tests, ui" />
+    <option name="LAST_COMMIT_MESSAGE" value="logic, tests, ui" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
