@@ -3,71 +3,265 @@ package sk.tuke.kpi.kp.mastermind.consoleui;
 import sk.tuke.kpi.kp.mastermind.core.Color;
 import sk.tuke.kpi.kp.mastermind.core.Field;
 import sk.tuke.kpi.kp.mastermind.core.FieldState;
+import sk.tuke.kpi.kp.mastermind.entity.Comment;
+import sk.tuke.kpi.kp.mastermind.entity.Rating;
+import sk.tuke.kpi.kp.mastermind.entity.Score;
+import sk.tuke.kpi.kp.mastermind.service.*;
 
+import java.util.Date;
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
+    public static final String GAME_NAME = "mastermind";
     private final Field field;
     private static final Scanner scanner = new Scanner(System.in);
+    private final ScoreService scoreService = new ScoreServiceJDBC();
+    private final CommentService commentService = new CommentServiceJDBC();
+    private final RatingService ratingService = new RatingServiceJDBC();
 
     public ConsoleUI(Field field) {
         this.field = field;
     }
 
     public void startGame() {
+        clearConsole();
+        chooseOptions();
+        clearConsole();
         printField();
-            do {
-                handleInput();
-                printField();
-            } while (this.field.getFieldState() == FieldState.IN_PROGRESS);
+        do {
+            handleInput();
+            clearConsole();
+            printField();
+        } while (field.getFieldState() == FieldState.IN_PROGRESS);
 
-            if (field.getFieldState() == FieldState.LOST) {
-                System.out.println("You lost! The secret combination of colors was: " + field.getSecretCode());
-            } else if (field.getFieldState() == FieldState.WON) {
-                System.out.println("You won! The secret combination of colors was: " + field.getSecretCode());
+        if (field.getFieldState() == FieldState.LOST) {
+            System.out.println("\nYou lost! The secret combination of colors was: " + field.getSecretCode());
+        } else if (field.getFieldState() == FieldState.WON) {
+            System.out.println("\nYou won! The secret combination of colors was: " + field.getSecretCode());
+            saveScore();
+        }
+        rate();
+        comment();
+    }
+
+    private void chooseOptions() {
+        printMenu();
+        moveTo();
+    }
+
+    private static void printMenu() {
+        System.out.print("#############################\n" +
+                "#   " + "\u001B[31m" + "         MENU    " + "\u001B[0m" + "       #\n" +
+                "#############################\n" +
+                "#                           #\n" +
+                "#    1) PLAY                #\n" +
+                "#    2) SEE RATING          #\n" +
+                "#    3) SEE AVERAGE RATING  #\n" +
+                "#    4) SEE TOP SCORES      #\n" +
+                "#    5) SEE COMMENTS        #\n" +
+                "#    6) EXIT                #\n" +
+                "#                           #\n" +
+                "#############################\n");
+    }
+
+    private void moveTo() {
+        int num = 0;
+        do {
+            System.out.println("\nMove to: ");
+            boolean done = false;
+            while (!done) {
+                try {
+                    num = scanner.nextInt();
+                    done = true;
+                    scanner.nextLine();
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid value! Please try again.");
+                    System.out.println("\nMove to: ");
+                    scanner.next();
+                }
             }
+
+            if (destinationMenu(num)) return;
+        } while (true);
+    }
+
+    private boolean destinationMenu(int num) {
+        switch (num) {
+            case 1:
+                return true;
+            case 2:
+                clearConsole();
+                printMenu();
+                System.out.println("\nEnter the name of the player whose rating you want to know :");
+                String name = scanner.nextLine();
+                System.out.println("\n" + name + " rated a game at " + ratingService.getRating(GAME_NAME, name));
+                break;
+            case 3:
+                clearConsole();
+                printMenu();
+                System.out.println("\nAverage rating of Mastermind game: " + ratingService.getAverageRating(GAME_NAME));
+                break;
+            case 4:
+                clearConsole();
+                printMenu();
+                printTopScores();
+                break;
+            case 5:
+                clearConsole();
+                printMenu();
+                printComments();
+                break;
+            case 6:
+                clearConsole();
+                System.exit(0);
+                break;
+        }
+        return false;
+    }
+
+    private static void clearConsole() {
+        System.out.print("\033\143");
+    }
+
+    private void rate() {
+        String answer;
+        do {
+            System.out.println("Do you want to rate the game? Y/N");
+            answer = scanner.next();
+            try {
+                if (answer.toUpperCase().charAt(0) == 'N') {
+                    return;
+                }
+            } catch (StringIndexOutOfBoundsException e) {
+                System.out.println("Please, try again");
+                scanner.next();
+            }
+        } while (answer.toUpperCase().charAt(0) != 'Y');
+        System.out.println("Rate the game (1 - 5): ");
+        float rating;
+        boolean done = false;
+        while (!done) {
+            try {
+                rating = scanner.nextFloat();
+                if (rating >= 0 && rating <= 5) {
+                    ratingService.setRating(new Rating(System.getProperty("user.name"), GAME_NAME,
+                            Math.round(rating), new Date()));
+                    done = true;
+                } else {
+                    System.out.println("Please, enter a value between 0 and 5.");
+                }
+
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid rating.");
+                scanner.next();
+            }
+        }
+    }
+
+
+    private void comment() {
+        String answer;
+        do {
+            System.out.println("Do you want to add a comment? Y/N");
+            answer = scanner.next();
+            try {
+                if (answer.toUpperCase().charAt(0) == 'N') {
+                    return;
+                }
+            } catch (StringIndexOutOfBoundsException e) {
+                System.out.println("Please, try again");
+                scanner.next();
+            }
+        } while (answer.toUpperCase().charAt(0) != 'Y');
+        scanner.nextLine();
+        System.out.println("Leave the comment: ");
+        String comment = scanner.nextLine();
+        if (comment.length() == 0) {
+            System.out.println("Incorrect comment.");
+            return;
+        }
+
+        commentService.addComment(new Comment(System.getProperty("user.name"), GAME_NAME,
+                comment, new Date()));
+    }
+
+    private void saveScore() {
+        scoreService.addScore(new Score(GAME_NAME, System.getProperty("user.name"),
+                field.getScore(), new Date()));
+
+    }
+
+    private void printTopScores() {
+        System.out.print("\n\n");
+        var scores = scoreService.getTopScores(GAME_NAME);
+        System.out.println("\u001B[31m" + "*-------------------------------------------------------------*" + "\u001B[0m");
+        for (int i = 0; i < scores.size(); i++) {
+            var score = scores.get(i);
+            System.out.printf("%d. " + "\u001B[33m" + "%s" + "\u001B[0m" + " : %d\n", i + 1, score.getPlayer(), score.getPoints());
+        }
+        System.out.println("\u001B[31m" + "*-------------------------------------------------------------*" + "\u001B[0m");
+    }
+
+    private void printComments() {
+        System.out.print("\n\n");
+        var comments = commentService.getComments(GAME_NAME);
+        System.out.println("\u001B[31m" + "*-------------------------------------------------------------*" + "\u001B[0m");
+        for (int i = 0; i < comments.size(); i++) {
+            var comment = comments.get(i);
+            System.out.printf("%d. " + "\u001B[33m" + "%s" + "\u001B[0m" + " : %s\n", i + 1, comment.getPlayer(), comment.getComment());
+        }
+        System.out.println("\u001B[31m" + "*-------------------------------------------------------------*" + "\u001B[0m");
     }
 
     private void showHeader() {
-        System.out.println("*" + "-".repeat(26) + "*");
-        System.out.println("#" + " ".repeat(8) + "Mastermind" + " ".repeat(8) + "#");
-        System.out.println("*" + "-".repeat(26) + "*");
+        System.out.println("*" + "-".repeat(40) + "*");
+        System.out.println("#" + " ".repeat(15) + "\u001B[31m" + "MASTERMIND" + "\u001B[0m" + " ".repeat(15) + "#");
+        System.out.println("*" + "-".repeat(40) + "*");
     }
 
     private void printField() {
         showHeader();
         for (int i = 0; i < field.getRowCount(); i++) {
-            System.out.println("|   " + (field.getBoardState()[i][0]).getCharColor(field.getBoardState()[i][0]) + "   "
-                    + (field.getBoardState()[i][1]).getCharColor(field.getBoardState()[i][1]) + "   "
-                    + (field.getBoardState()[i][2]).getCharColor(field.getBoardState()[i][2])
-                    + "   " + (field.getBoardState()[i][3]).getCharColor(field.getBoardState()[i][3]) + "   | " + (field.getKeyColors()[i][0]).getCharKeyColor(field.getKeyColors()[i][0])
-                    + (field.getKeyColors()[i][1]).getCharKeyColor(field.getKeyColors()[i][1]) + (field.getKeyColors()[i][2]).getCharKeyColor(field.getKeyColors()[i][2])
-                    + (field.getKeyColors()[i][3]).getCharKeyColor(field.getKeyColors()[i][3]) + " |");
-            if(i == field.getRowCount() - 1) {
-                System.out.println("*" + "-".repeat(26) + "*");
+            printCurrentBoardState(i);
+            if (i == field.getRowCount() - 1) {
+                System.out.println("*" + "-".repeat(40) + "*");
             } else {
-                System.out.println("*" + "-".repeat(19) + "*" + "-".repeat(6) + "*");
+                System.out.println("*" + "-".repeat(23) + "*" + "-".repeat(16) + "*");
             }
         }
     }
 
+    private void printCurrentBoardState(int i) {
+        System.out.println("|   " + (field.getBoardState()[i][0]).getCharColor() + "   "
+                + (field.getBoardState()[i][1]).getCharColor() + "   "
+                + (field.getBoardState()[i][2]).getCharColor() + "   "
+                + (field.getBoardState()[i][3]).getCharColor() + "   | "
+                + (field.getKeyColors()[i][0]).getCharKeyColor()
+                + (field.getKeyColors()[i][1]).getCharKeyColor()
+                + (field.getKeyColors()[i][2]).getCharKeyColor()
+                + (field.getKeyColors()[i][3]).getCharKeyColor() + "       |");
+    }
+
     private String readLine() {
         String guess = scanner.nextLine();
-        if(guess.length() < 4) {
+        if (guess.length() < 4) {
             return null;
         }
-        guess = guess.substring(0,4).toUpperCase();
+        guess = guess.substring(0, 4).toUpperCase();
 
         boolean repeat = false;
 
-        for(int i = 0; i < guess.length(); i++) {
-            for(int j = i + 1; j < guess.length(); j++) {
+        for (int i = 0; i < guess.length(); i++) {
+            for (int j = i + 1; j < guess.length(); j++) {
                 if (guess.charAt(i) == guess.charAt(j)) {
                     repeat = true;
                     break;
                 }
             }
-            if(repeat) {
+            if (repeat) {
                 return null;
             }
         }
@@ -89,22 +283,12 @@ public class ConsoleUI {
     }
 
     private void handleInput() {
-        System.out.println("Enter a combination of 4 colors: (R)ed, (G)reen, (B)lue, (Y)ellow, " +
-                "(O)range, (V)iolet, (M)int, (P)ink, (I)ndigo");
+        System.out.println("\nEnter a combination of 4 colors: (R)ed, (G)reen, (B)lue, (Y)ellow, " +
+                "(O)range, (V)iolet, (S)ilver, (H)azel, (P)ink");
         String input = readLine();
 
-        if(input != null) {
-            field.makeGuess(input);
-//            List<KeyColor> keyColors;
-//            try {
-//                keyColors = field.calculateKeyColors(colors);
-//            } catch (NullPointerException e) {
-//                System.out.println("Invalid value of your guess");
-//                return;
-//            }
-//            System.out.println("Your colors: " + colors);
-//            System.out.println("Secret: " + field.getSecretCode());
-//            System.out.println("Feedback " + keyColors);
+        if (input != null) {
+            List<Color> colors = field.makeGuess(input);
         } else {
             System.out.println("Invalid value! Try again!");
         }

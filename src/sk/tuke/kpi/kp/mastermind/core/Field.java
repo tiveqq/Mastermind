@@ -11,6 +11,7 @@ public class Field {
     private final Color[][] boardState;
     private final List<Color> secretCode;
     private final KeyColor[][] keyColors;
+    private long startMillis;
 
     public Field() {
         this.rowCount = 10;
@@ -35,19 +36,22 @@ public class Field {
                 keyColors[i][j] = KeyColor.NONE;
             }
         }
+
+        startMillis = System.currentTimeMillis();
     }
 
     private void generateSecretCode() {
         int i = 0;
-        while(i < 4) {
+        while (i < 4) {
             int number = (int) (Math.random() * Color.values().length);
             var colors = Color.values();
-            if(!secretCode.contains(colors[number]) && !colors[number].equals(Color.NONE)) {
+            if (!secretCode.contains(colors[number]) && !colors[number].equals(Color.NONE)) {
                 secretCode.add(i, colors[number]);
                 i++;
             }
         }
     }
+
     public void updateField(List<Color> guess, List<KeyColor> feedback) {
         for (int i = 0; i < colCount; i++) {
             boardState[attemptsRemaining - 1][i] = guess.get(i);
@@ -64,7 +68,7 @@ public class Field {
 
         for (int i = 0; i < guess.length(); i++) {
             color = color.getColor(guess.charAt(i));
-            if((color == null)) {
+            if ((color == null)) {
                 return null;
             }
             colorGuess.add(color);
@@ -74,9 +78,9 @@ public class Field {
 
         this.attemptsRemaining--;
 
-        if(attemptsRemaining <= 0) {
+        if (attemptsRemaining <= 0) {
             this.fieldState = FieldState.LOST;
-        } else if(colorGuess.equals(secretCode)) {
+        } else if (colorGuess.equals(secretCode)) {
             this.fieldState = FieldState.WON;
         }
 
@@ -93,8 +97,8 @@ public class Field {
             }
         }
         int i = 0;
-        for(Color color : guess) {
-            if(guess.indexOf(color) == secretCode.indexOf(color)) {
+        for (Color color : guess) {
+            if (guess.indexOf(color) == secretCode.indexOf(color)) {
                 keyColorList.set(i, KeyColor.BLACK);
                 i++;
             }
@@ -123,4 +127,12 @@ public class Field {
         return rowCount;
     }
 
+    public int getScore() {
+        int score = 0;
+        for (int i = 0; i < colCount; i++) {
+            score += (4 - i) * 10;
+
+        }
+        return score * (10 + attemptsRemaining) - (int) (System.currentTimeMillis() - startMillis) / 1000;
+    }
 }

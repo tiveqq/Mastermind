@@ -1,10 +1,10 @@
 package sk.tuke.kpi.kp.mastermind.core;
 
 public enum Color {
-    NONE, RED, GREEN, BLUE, YELLOW, ORANGE, VIOLET, INDIGO, MINT, PINK;
+    NONE, RED, GREEN, BLUE, YELLOW, ORANGE, VIOLET, SILVER, HAZEL, PINK;
 
     public Color getColor(char color) {
-        switch(color) {
+        switch (color) {
             case 'R':
                 return RED;
             case 'G':
@@ -17,10 +17,10 @@ public enum Color {
                 return ORANGE;
             case 'V':
                 return VIOLET;
-            case 'I':
-                return INDIGO;
-            case 'M':
-                return MINT;
+            case 'S':
+                return SILVER;
+            case 'H':
+                return HAZEL;
             case 'P':
                 return PINK;
             default:
@@ -28,8 +28,8 @@ public enum Color {
         }
     }
 
-    public Object getCharColor(Color color) {
-        switch (color) {
+    public Object getCharColorConverting() {
+        switch (this) {
             case RED:
                 return 'R';
             case GREEN:
@@ -42,14 +42,41 @@ public enum Color {
                 return 'O';
             case VIOLET:
                 return 'V';
-            case INDIGO:
-                return 'I';
+            case SILVER:
+                return 'S';
             case NONE:
                 return ' ';
-            case MINT:
-                return 'M';
+            case HAZEL:
+                return 'H';
             case PINK:
                 return 'P';
+            default:
+                return null;
+        }
+    }
+
+    public Object getCharColor() {
+        switch (this) {
+            case RED:
+                return "🔴";
+            case GREEN:
+                return "🟢";
+            case BLUE:
+                return "🔵";
+            case YELLOW:
+                return "🟡";
+            case ORANGE:
+                return "🟠";
+            case VIOLET:
+                return "🟣";
+            case SILVER:
+                return "🔘";
+            case NONE:
+                return "  ";
+            case HAZEL:
+                return "🟤";
+            case PINK:
+                return "💖";
             default:
                 return null;
         }

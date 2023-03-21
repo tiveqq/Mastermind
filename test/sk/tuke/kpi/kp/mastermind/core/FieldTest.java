@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class FieldTest {
-    private Field field;
+    private final Field field;
 
     public FieldTest() {
         this.field = new Field();
@@ -18,14 +18,14 @@ public class FieldTest {
     @Test
     void checkIsGameLost() {
         String guess;
-        if(!field.getSecretCode().equals(List.of(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW))) {
+        if (!field.getSecretCode().equals(List.of(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW))) {
             guess = "RGBY";
         } else {
-           guess = "RGBI";
+            guess = "RGBS";
         }
 
-        for(int i = 0; i < 10; i++) {
-            field.makeGuess(guess);
+        for (int i = 0; i < 10; i++) {
+            List<Color> converted = field.makeGuess(guess);
         }
 
         assertSame(field.getFieldState(), FieldState.LOST, "10 guesses was executed. Game is over.");
@@ -35,14 +35,12 @@ public class FieldTest {
     void checkIsGameWon() {
         List<Color> secret = field.getSecretCode();
 
-        String guess = "" + secret.get(0).getCharColor(secret.get(0)) + secret.get(1).getCharColor(secret.get(1)) +
-                secret.get(2).getCharColor(secret.get(2)) + secret.get(3).getCharColor(secret.get(3));
-
-        System.out.println(guess);
+        String guess = "" + secret.get(0).getCharColorConverting() + secret.get(1).getCharColorConverting() +
+                secret.get(2).getCharColorConverting() + secret.get(3).getCharColorConverting();
 
         List<Color> converted = field.makeGuess(guess);
 
-        assertSame(field.getFieldState(), FieldState.WON);
+        assertSame(FieldState.WON, field.getFieldState());
     }
 
     @Test
@@ -50,8 +48,10 @@ public class FieldTest {
         String guess = "RGBY";
 
         List<Color> guessColors = new ArrayList<>(4);
-        guessColors.add(Color.RED); guessColors.add(Color.GREEN);
-        guessColors.add(Color.BLUE); guessColors.add(Color.YELLOW);
+        guessColors.add(Color.RED);
+        guessColors.add(Color.GREEN);
+        guessColors.add(Color.BLUE);
+        guessColors.add(Color.YELLOW);
 
         assertEquals(guessColors, field.makeGuess(guess), "The guess was converted correctly");
     }

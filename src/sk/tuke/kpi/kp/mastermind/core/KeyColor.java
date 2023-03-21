@@ -3,14 +3,14 @@ package sk.tuke.kpi.kp.mastermind.core;
 public enum KeyColor {
     NONE, WHITE, BLACK;
 
-    public Object getCharKeyColor(KeyColor color) {
-        switch (color) {
+    public Object getCharKeyColor() {
+        switch (this) {
             case NONE:
-                return ' ';
+                return "\u2005" + " ";
             case WHITE:
-                return 'W';
+                return "⚪️";
             case BLACK:
-                return 'B';
+                return "⚫";
             default:
                 return null;
         }
