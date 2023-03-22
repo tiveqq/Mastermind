@@ -67,6 +67,7 @@ public class ConsoleUI {
     }
 
     private void moveTo() {
+        boolean exitMenu = false;
         int num = 0;
         do {
             System.out.println("\nMove to: ");
@@ -83,8 +84,8 @@ public class ConsoleUI {
                 }
             }
 
-            if (destinationMenu(num)) return;
-        } while (true);
+            if (destinationMenu(num)) exitMenu = true;
+        } while (!exitMenu);
     }
 
     private boolean destinationMenu(int num) {
