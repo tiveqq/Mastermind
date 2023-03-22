@@ -9,7 +9,7 @@ public class Field {
     private int attemptsRemaining;
     private FieldState fieldState = FieldState.IN_PROGRESS;
     private final Color[][] boardState;
-    private final List<Color> secretCode;
+    private  List<Color> secretCode;
     private final KeyColor[][] keyColors;
     private long startMillis;
 
@@ -41,15 +41,16 @@ public class Field {
     }
 
     private void generateSecretCode() {
-        int i = 0;
-        while (i < 4) {
-            int number = (int) (Math.random() * Color.values().length);
-            var colors = Color.values();
-            if (!secretCode.contains(colors[number]) && !colors[number].equals(Color.NONE)) {
-                secretCode.add(i, colors[number]);
-                i++;
-            }
-        }
+//        int i = 0;
+//        while (i < 4) {
+//            int number = (int) (Math.random() * Color.values().length);
+//            var colors = Color.values();
+//            if (!secretCode.contains(colors[number]) && !colors[number].equals(Color.NONE)) {
+//                secretCode.add(i, colors[number]);
+//                i++;
+//            }
+//        }
+        secretCode = List.of(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
     }
 
     public void updateField(List<Color> guess, List<KeyColor> feedback) {

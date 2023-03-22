@@ -146,7 +146,7 @@ public class ConsoleUI {
             try {
                 rating = scanner.nextFloat();
                 if (rating >= 0 && rating <= 5) {
-                    ratingService.setRating(new Rating(System.getProperty("user.name"), GAME_NAME,
+                    ratingService.setRating(new Rating(GAME_NAME, System.getProperty("user.name"),
                             Math.round(rating), new Date()));
                     done = true;
                 } else {
