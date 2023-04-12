@@ -1,0 +1,53 @@
+GET http://localhost:8080/api/rating/mastermind
+Accept: application/json
+
+###
+GET http://localhost:8080/api/rating/mastermind/karunnyi
+Accept: application/json
+
+###
+POST http://localhost:8080/api/rating
+Content-Type: application/json
+
+{
+  "game" : "mastermind",
+  "player" : "ka",
+  "rating" : 4,
+  "ratedOn" : "2019-03-25T12:40:33"
+}
+
+###
+POST http://localhost:8080/api/comment
+Content-Type: application/json
+
+{
+  "game" : "mastermind",
+  "player" : "karunnyi",
+  "comment" : "very good",
+  "commentedOn" : "2019-03-25T12:40:33"
+}
+
+###
+GET http://localhost:8080/api/comment/mastermind
+Accept: application/json
+
+###
+POST http://localhost:8080/api/score
+Content-Type: application/json
+
+{
+  "game" : "mastermind",
+  "player" : "karunnyi",
+  "points" : 100,
+  "playedOn" : "2019-03-25T12:40:33"
+}
+
+###
+GET http://localhost:8080/api/score/mastermind
+Accept: application/json
+
+###
+
+
+
+
