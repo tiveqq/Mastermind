@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/template.html}">
+
+<main layout:fragment="content">
+<div class="section">
+    <div class="container">
+        <div class="row full-height justify-content-center">
+            <div class="col-12 text-center align-self-center py-5">
+                <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                    <h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+                    <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+                    <label for="reg-log"></label>
+                    <div class="card-3d-wrap mx-auto">
+                        <div class="card-3d-wrapper">
+                            <div class="card-front">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <h4 class="mb-4 pb-3">Log In</h4>
+                                        <script>
+                                            function submitLoginForm() {
+                                                var loginInput = document.getElementById('login-input');
+                                                var passwdInput = document.getElementById('passwd-input');
+                                                var loginForm = document.getElementById('login-form');
+                                                loginForm.login.value = loginInput.value;
+                                                loginForm.passwd.value = passwdInput.value;
+                                                loginForm.submit();
+                                            }
+                                        </script>
+                                        <div class="form-group">
+                                            <input type="text" id="login-input" class="form-style" placeholder="Login">
+                                            <i class="input-icon uil uil-at"></i>
+                                        </div>
+                                        <div class="form-group mt-2">
+                                            <input type="password" id="passwd-input" class="form-style" placeholder="Password">
+                                            <i class="input-icon uil uil-lock-alt"></i>
+                                        </div>
+                                        <form id="login-form" action="/login" method="post" style="display: none;">
+                                            <input type="hidden" name="login" />
+                                            <input type="hidden" name="passwd" />
+                                        </form>
+                                        <p class="error-message" th:if="${errorMessageLogin}" th:text="${errorMessageLogin}"></p>
+                                        <a class="btn mt-4" onclick="submitLoginForm();">
+                                            Login
+                                        </a>
+                                        <p class="mb-0 mt-4 text-center"><a href="/mastermind/new" class="link">Continue as a guest</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <h4 class="mb-3 pb-3">Sign Up</h4>
+                                        <script>
+                                            function submitRegisterForm() {
+                                                var loginInput = document.getElementById('login2-input');
+                                                var passwdInput = document.getElementById('passwd2-input');
+                                                var loginForm = document.getElementById('register-form');
+                                                loginForm.login.value = loginInput.value;
+                                                loginForm.passwd.value = passwdInput.value;
+                                                loginForm.submit();
+                                            }
+                                        </script>
+                                        <div class="form-group">
+                                            <input type="text" id="login2-input" class="form-style" placeholder="Login">
+                                            <i class="input-icon uil uil-at"></i>
+                                        </div>
+                                        <div class="form-group mt-2">
+                                            <input type="password" id="passwd2-input" class="form-style" placeholder="Password">
+                                            <i class="input-icon uil uil-lock-alt"></i>
+                                        </div>
+                                        <form id="register-form" action="/register" method="post" style="display: none;">
+                                            <input type="hidden" name="login" />
+                                            <input type="hidden" name="passwd" />
+                                        </form>
+                                        <p class="error-message" th:if="${errorMessageRegister}" th:text="${errorMessageRegister}"></p>
+                                        <a onclick="submitRegisterForm();" class="btn mt-4">
+                                            Register
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+
+</html>

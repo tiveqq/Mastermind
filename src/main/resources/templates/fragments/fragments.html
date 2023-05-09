@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="header">
+  <!--/*@thymesVar id="userController" type="sk.tuke.gamestudio.server.controller.UserController"*/-->
+  <div class="logged" th:if="${@userController.logged}">
+    Logged as: <span th:text="${@userController.loggedUser.getName}"/>
+    <a href="/logout">Logout</a>
+  </div>
+  <div class="logged" th:if="not ${@userController.logged}">
+    Not logged. Please
+    <a href="/">login</a>.
+  </div>
+</header>
+
+<footer th:fragment="footer">
+  <hr/>
+  <span>&copy; 2023 - Kyrylo Karunnyi</span>
+</footer>
+
+<div th:fragment="scores(scores)">
+  <h2>Top scores</h2>
+  <table class="scores">
+    <thead>
+    <tr>
+      <th>No.</th>
+      <th>Player</th>
+      <th>Points</th>
+      <th>Played at</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--/*@thymesVar id="scores" type="java.util.List<sk.tuke.gamestudio.entity.Score>"*/-->
+    <tr th:each="score, it : ${scores}">
+      <td th:text="${it.index + 1}"/>
+      <td th:text="${score.player}"/>
+      <td th:text="${score.points}"/>
+      <td th:text="${#dates.format(score.playedOn, 'dd.MM.yyyy HH:mm')}"/>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div th:fragment="comments(comments)">
+  <h2>Comments</h2>
+  <table class="comments">
+    <thead>
+    <tr>
+      <th>No.</th>
+      <th>Player</th>
+      <th>Comment</th>
+      <th>Commented at</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--/*@thymesVar id="scores" type="java.util.List<sk.tuke.gamestudio.entity.Comment>"*/-->
+    <tr th:each="comment, it : ${comments}">
+      <td th:text="${it.index + 1}"/>
+      <td th:text="${comment.player}"/>
+      <td th:text="${comment.comment}"/>
+      <td th:text="${#dates.format(comment.commentedOn, 'dd.MM.yyyy HH:mm')}"/>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</html>

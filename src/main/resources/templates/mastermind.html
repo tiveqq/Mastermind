@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/template.html}">
+
+
+<!--/*@thymesVar id="mastermindController" type="sk.tuke.gamestudio.server.controller.MastermindController"*/-->
+<body bgcolor="#c0c0c0"></body>
+<main layout:fragment="content">
+    <header th:replace="~{fragments/fragments :: header}"></header>
+    <nav>
+        <ul>
+            <li class="option"><a href="/mastermind/new">NEW GAME</a></li>
+            <li class="option"><span data-toggle="modal" data-target="#scoresModal">TOP SCORES</span></li>
+            <li class="option"><span data-toggle="modal" data-target="#ratingModal">RATE THE GAME</span></li>
+            <li class="option"><span data-toggle="modal" data-target="#commentModal">LEAVE THE COMMENT</span></li>
+            <li class="option"><span data-toggle="modal" data-target="#avgRatingModal">AVERAGE RATING</span></li>
+            <li class="option"><span data-toggle="modal" data-target="#seeCommentsModal">SEE COMMENTS</span></li>
+        </ul>
+    </nav>
+
+    <div class="modal fade" id="scoresModal" tabindex="-1" role="dialog" aria-labelledby="scoresModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="scoresModalLabel">TOP SCORES</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div th:replace="~{fragments/fragments :: scores(${scores})}"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ratingLabel">RATE THE GAME</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" th:action="@{/mastermind/rate}" method="post">
+                        <input type="hidden" th:name="gameId"/>
+                        <div class="rate">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5" title="text">5 stars</label>
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4" title="text">4 stars</label>
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3" title="text">3 stars</label>
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2" title="text">2 stars</label>
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1" title="text">1 star</label>
+                        </div>
+                        <button type="submit">Отправить</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentModalLabel">LEAVE A COMMENT</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <form th:action="@{/mastermind/comments}" method="post">
+                            <input type="text" name="comment" placeholder="Leave a comment">
+                            <button type="submit">Send</button>
+                        </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="avgRatingModal" tabindex="-1" role="dialog" aria-labelledby="avgRatingModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="avgRatingModalLabel">AVERAGE RATING</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Average rating: <span th:text="${avgRating}"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1>MASTERMIND</h1>
+
+    <div class="secret" th:if="${@mastermindController.statusGame}">
+        <div class = "secret-ques">
+            <img src="/images/question-mark.svg" class="secret-ques-img"><img src="/images/question-mark.svg" class="secret-ques-img"><img src="/images/question-mark.svg" class="secret-ques-img"><img src="/images/question-mark.svg" class="secret-ques-img">
+        </div>
+    </div>
+    <div class="secret" th:if="not ${@mastermindController.statusGame}">
+        <div class = "secret-colored">
+            <div th:utext="${@mastermindController.getHtmlSecret}"></div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="seeCommentsModal" tabindex="-1" role="dialog" aria-labelledby="seeCommentsModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="seeCommentsModalLabel">SEE COMMENTS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!--/*@thymesVar id="scores" type="java.util.List<sk.tuke.gamestudio.entity.Comment>"*/-->
+                    <div th:replace="~{fragments/fragments :: comments(${comments})}"></div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+<div th:utext="${@mastermindController.getHtmlField}">
+</div>
+    <div class="container">
+        <div class = 'color-buttons'>
+            <div class="color-button" data-color="red"><img src="/images/red-circle.svg"></div>
+            <div class="color-button" data-color="blue"><img src="/images/blue-circle.svg"></div>
+            <div class="color-button" data-color="green"><img src="/images/green-circle.svg"></div>
+            <div class="color-button" data-color="yellow"><img src="/images/yellow-circle.svg"></div>
+            <div class="color-button" data-color="chocolate"><img src="/images/brown-circle.svg"></div>
+            <div class="color-button" data-color="violet"><img src="/images/purple-circle.svg"></div>
+            <div class="color-button" data-color="silver"><img src="/images/gray-circle.svg"></div>
+            <div class="color-button" data-color="pink"><img src="/images/pink-circle.svg"></div>
+            <div class="color-button" data-color="orange"><img src="/images/orange-circle.svg"></div>
+            <div class="clear"></div>
+        </div>
+        <div>
+            <form class="guess-form" action="#" th:action="@{/mastermind/guess}" th:object="${guessForm}" method="post">
+                <div class="guess-field">
+                <div class="guess-hole" >
+                    <input type="hidden" th:field="*{color1}" id="color1" name="color1"/>
+                    <img src="/images/input-circle.svg" class="guess-hole-img">
+                </div>
+                <div class="guess-hole">
+                    <input type="hidden" th:field="*{color2}" id="color2" name="color2"/>
+                    <img src="/images/input-circle.svg" class="guess-hole-img">
+                </div>
+                <div class="guess-hole">
+                    <input type="hidden" th:field="*{color3}" id="color3" name="color3"/>
+                    <img src="/images/input-circle.svg" class="guess-hole-img">
+                </div>
+                <div class="guess-hole">
+                    <input type="hidden" th:field="*{color4}" id="color4" name="color4"/>
+                    <img src="/images/input-circle.svg" class="guess-hole-img">
+                </div>
+                <div class="clear"></div>
+                <button class="sbutton" type="submit">CHECK</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.4.2/dist/tinycolor-min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.color-button img').draggable({
+                helper: 'clone'
+            });
+            $('.guess-hole').droppable({
+                drop: function(event, ui) {
+                    var color = ui.draggable.closest('.color-button').data('color');
+                    var rgbColor = tinycolor(color).toRgbString();
+                    var colorName = tinycolor(rgbColor).toName();
+                    $(this).children('.guess-hole-img').attr('src', ui.draggable.attr('src'));
+                    if (colorName.length > 0) {
+                        var firstLetter = colorName.charAt(0).toUpperCase();
+                        $(this).children('input').val(firstLetter);
+                    }
+                }
+            });
+        });
+    </script>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+</main>
+</html>
+
+
