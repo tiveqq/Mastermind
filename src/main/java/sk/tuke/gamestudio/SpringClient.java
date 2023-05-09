@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.web.client.RestTemplate;
 import sk.tuke.gamestudio.game.mastermind.consoleui.ConsoleUI;
+import sk.tuke.gamestudio.server.forms.GuessForm;
 import sk.tuke.gamestudio.service.*;
 
 @SpringBootApplication
@@ -48,6 +49,11 @@ public class SpringClient {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public GuessForm gameForm() {
+        return new GuessForm();
     }
 
 }

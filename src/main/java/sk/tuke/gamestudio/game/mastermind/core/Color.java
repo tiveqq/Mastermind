@@ -1,85 +1,51 @@
 package sk.tuke.gamestudio.game.mastermind.core;
 
 public enum Color {
-    NONE, RED, GREEN, BLUE, YELLOW, ORANGE, VIOLET, SILVER, HAZEL, PINK;
+    NONE, RED, GREEN, BLUE, YELLOW, ORANGE, VIOLET, SILVER, CHOCOLATE, PINK;
 
     public Color getColor(char color) {
-        switch (color) {
-            case 'R':
-                return RED;
-            case 'G':
-                return GREEN;
-            case 'B':
-                return BLUE;
-            case 'Y':
-                return YELLOW;
-            case 'O':
-                return ORANGE;
-            case 'V':
-                return VIOLET;
-            case 'S':
-                return SILVER;
-            case 'H':
-                return HAZEL;
-            case 'P':
-                return PINK;
-            default:
-                return null;
-        }
+        return switch (color) {
+            case 'R' -> RED;
+            case 'G' -> GREEN;
+            case 'B' -> BLUE;
+            case 'Y' -> YELLOW;
+            case 'O' -> ORANGE;
+            case 'V' -> VIOLET;
+            case 'S' -> SILVER;
+            case 'C' -> CHOCOLATE;
+            case 'P' -> PINK;
+            default -> null;
+        };
     }
 
     public Object getCharColorConverting() {
-        switch (this) {
-            case RED:
-                return 'R';
-            case GREEN:
-                return 'G';
-            case BLUE:
-                return 'B';
-            case YELLOW:
-                return 'Y';
-            case ORANGE:
-                return 'O';
-            case VIOLET:
-                return 'V';
-            case SILVER:
-                return 'S';
-            case NONE:
-                return ' ';
-            case HAZEL:
-                return 'H';
-            case PINK:
-                return 'P';
-            default:
-                return null;
-        }
+        return switch (this) {
+            case RED -> 'R';
+            case GREEN -> 'G';
+            case BLUE -> 'B';
+            case YELLOW -> 'Y';
+            case ORANGE -> 'O';
+            case VIOLET -> 'V';
+            case SILVER -> 'S';
+            case NONE -> ' ';
+            case CHOCOLATE -> 'C';
+            case PINK -> 'P';
+        };
     }
 
     public Object getCharColor() {
-        switch (this) {
-            case RED:
-                return "🔴";
-            case GREEN:
-                return "🟢";
-            case BLUE:
-                return "🔵";
-            case YELLOW:
-                return "🟡";
-            case ORANGE:
-                return "🟠";
-            case VIOLET:
-                return "🟣";
-            case SILVER:
-                return "🔘";
-            case NONE:
-                return "  ";
-            case HAZEL:
-                return "🟤";
-            case PINK:
-                return "💖";
-            default:
-                return null;
-        }
+        return switch (this) {
+            case RED -> "🔴";
+            case GREEN -> "🟢";
+            case BLUE -> "🔵";
+            case YELLOW -> "🟡";
+            case ORANGE -> "🟠";
+            case VIOLET -> "🟣";
+            case SILVER -> "🔘";
+            case NONE -> "  ";
+            case CHOCOLATE -> "🟤";
+            case PINK -> "💖";
+        };
     }
 }
 

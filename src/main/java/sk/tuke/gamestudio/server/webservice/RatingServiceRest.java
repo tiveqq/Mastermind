@@ -12,6 +12,7 @@ public class RatingServiceRest {
     @Autowired
     private final RatingService ratingService;
 
+
     public RatingServiceRest(RatingService ratingService) {
         this.ratingService = ratingService;
     }

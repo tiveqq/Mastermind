@@ -182,7 +182,6 @@ public class MastermindController {
             String guessString = getGuessString(guessForm);
             System.out.println(guessString);
             if(guessString.length() != 4) {
-                prepareModel(model);
                 return "mastermind";
             }
             List<Color> colors = field.makeGuess(guessString);

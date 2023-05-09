@@ -265,7 +265,8 @@ public class ConsoleUI {
     }
 
     private void printCurrentBoardState(int i) {
-        System.out.println("|   " + (field.getBoardState()[i][0]).getCharColor() + "   "
+        System.out.println("|   "
+                + (field.getBoardState()[i][0]).getCharColor() + "   "
                 + (field.getBoardState()[i][1]).getCharColor() + "   "
                 + (field.getBoardState()[i][2]).getCharColor() + "   "
                 + (field.getBoardState()[i][3]).getCharColor() + "   | "

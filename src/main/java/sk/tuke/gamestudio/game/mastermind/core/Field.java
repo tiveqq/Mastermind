@@ -67,6 +67,21 @@ public class Field {
         List<Color> colorGuess = new ArrayList<>(4);
         Color color = Color.NONE;
 
+        var repeat = false;
+
+        for (int i = 0; i < guess.length(); i++) {
+            for (int j = i + 1; j < guess.length(); j++) {
+                if (guess.charAt(i) == guess.charAt(j)) {
+                    repeat = true;
+                    break;
+                }
+            }
+        }
+
+        if (repeat) {
+            return null;
+        }
+
         for (int i = 0; i < guess.length(); i++) {
             color = color.getColor(guess.charAt(i));
             if ((color == null)) {
@@ -116,8 +131,16 @@ public class Field {
         return boardState;
     }
 
+    public Color getColor(int row, int col) {
+        return boardState[row][col];
+    }
+
     public KeyColor[][] getKeyColors() {
         return keyColors;
+    }
+
+    public KeyColor getKeyColor(int row, int col) {
+        return keyColors[row][col];
     }
 
     public List<Color> getSecretCode() {
@@ -126,6 +149,10 @@ public class Field {
 
     public int getRowCount() {
         return rowCount;
+    }
+
+    public int getColCount() {
+        return colCount;
     }
 
     public int getScore() {
